@@ -55,6 +55,10 @@ public class VectorSpace {
 		}
 	}
 	
+	/**
+	 * Trained by norminalized term frequency
+	 * @param indexingFiles
+	 */
 	public void trainByNtf(File[] indexingFiles) {
 		_termDocumentMap = new HashMap <String, TreeSet<DocumentWeightPair>>();
 		_corpusSize = indexingFiles.length;
@@ -81,6 +85,11 @@ public class VectorSpace {
 				maxTermFrequencyInCorpus);
 	}
 	
+	/**
+	 * get all documents that contain the term ordered by term frequencies.. (either WTF or NTF)
+	 * @param term
+	 * @return
+	 */
 	public TreeSet <DocumentWeightPair> retrieveAllDocuments(String term) {
 		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
 		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
@@ -89,7 +98,11 @@ public class VectorSpace {
 		return termDocumentWeight;
 	}
 
-	
+	/**
+	 * get top k documents that contain the term ordered by term frequencies.. (either WTF or NTF)
+	 * @param term
+	 * @return
+	 */
 	public TreeSet <DocumentWeightPair> retrieveTopKDocuments(String term, int k) {
 		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
 		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
@@ -147,6 +160,7 @@ public class VectorSpace {
 
 
 	/**
+	 * We calculate max frequency map to count the ntf
 	 * @param termFrequency
 	 */
 	private HashMap <String, Integer> setupMaxFrequency(
