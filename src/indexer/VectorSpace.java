@@ -1,10 +1,14 @@
 package indexer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -24,8 +28,20 @@ public class VectorSpace {
 	 * The key is the terms, and they are mapped to the documents that contain them.
 	 */
 	private HashMap <String, TreeSet<DocumentWeightPair>> _termDocumentMap = null;
-		
-	public VectorSpace() {
+	
+	/**
+	 * construct VectorSpace as a singleton object
+	 */
+	private static VectorSpace _vectorSpace = null;
+	
+	private VectorSpace() {
+	}
+	
+	public static VectorSpace getObject() {
+		if (_vectorSpace == null) {
+			_vectorSpace = new VectorSpace();
+		}
+		return _vectorSpace;
 	}
 
 	
@@ -40,8 +56,12 @@ public class VectorSpace {
 		_corpusSize = indexingFiles.length;
 		
 		for (File file : indexingFiles) {
+			String url = getUrl(file);
+			if (url == null) {
+				continue;
+			}
+
 			List <String> words = Utilities.getObject().tokenizeFileWithoutStopWords(file);
-			String url = words.get(0);
 			words.remove(0);
 			
 			String documentName = file.getAbsolutePath();
@@ -53,6 +73,28 @@ public class VectorSpace {
 				setupTermDocumentMapByWTF(documentVector, termFrequency);
 			}
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	private String getUrl(File file) {
+		String url = null;
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			for (String line; (line = br.readLine()) != null;) {
+				url = line;
+				break;
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		if (url == null) {
+			return null;
+		}
+		url.trim();
+		return url;
 	}
 	
 	/**
@@ -67,8 +109,12 @@ public class VectorSpace {
 		HashMap <String, Integer> maxTermFrequencyInCorpus = new HashMap <String, Integer>();
 		
 		for (File file : indexingFiles) {
+			String url = getUrl(file);
+			if (url == null) {
+				continue;
+			}
+
 			List <String> words = Utilities.getObject().tokenizeFileWithoutStopWords(file);
-			String url = words.get(0);
 			words.remove(0);
 			
 			String documentName = file.getAbsolutePath();
@@ -127,6 +173,19 @@ public class VectorSpace {
 		double idf = (_corpusSize + 0.0) / (_termDocumentMap.get(term).size() + 0.0);
 		idf = Math.log(idf);
 		return idf;
+	}
+	
+	public void printTermDocumentMap() {
+		for (Map.Entry<String, TreeSet<DocumentWeightPair> > termDocuments : _termDocumentMap.entrySet()) {
+		    String term = termDocuments.getKey();
+		    TreeSet <DocumentWeightPair> pairs = termDocuments.getValue();
+		    
+		    System.out.print(term + ":");
+		    for (DocumentWeightPair pair : pairs) {
+		    	System.out.print(pair.documentVector.getUrl() + " " + pair.weight + ",");
+		    }
+		    System.out.println("");
+		}
 	}
 
 
