@@ -43,12 +43,12 @@ public final class WordFrequencyCounter {
 	 * @param words A list of words.
 	 * @return A list of word frequencies, ordered by decreasing frequency.
 	 */
-	public static List<Frequency> computeWordFrequencies(List<String> words) {
+	public static List<TermFrequencyPerDocument> computeWordFrequencies(List<String> words) {
 		// TODO Write body!
 		if (words == null) {
 			return null;
 		}
-		List<Frequency> frequencies = new ArrayList<Frequency>();
+		List<TermFrequencyPerDocument> frequencies = new ArrayList<TermFrequencyPerDocument>();
 		HashMap <String, Integer> hashEntry = new HashMap <String, Integer>();
 		
 		for (String word : words) {
@@ -56,12 +56,12 @@ public final class WordFrequencyCounter {
 			if (!hashEntry.containsKey(word)) {
 				Integer indexInteger = new Integer(index);
 				hashEntry.put(word, indexInteger);
-				Frequency frequency = new Frequency(word);
+				TermFrequencyPerDocument frequency = new TermFrequencyPerDocument(word);
 				frequency.incrementFrequency();
 				frequencies.add(frequency);
 			} else {
 				index = hashEntry.get(word).intValue();
-				Frequency frequency = frequencies.get(index);
+				TermFrequencyPerDocument frequency = frequencies.get(index);
 				frequency.incrementFrequency();
 				frequencies.set(index, frequency);
 			}
@@ -79,7 +79,7 @@ public final class WordFrequencyCounter {
 	public static void main(String[] args) {
 		File file = new File(args[0]);
 		List<String> words = Utilities.tokenizeFile(file);
-		List<Frequency> frequencies = computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = computeWordFrequencies(words);
 		Utilities.printFrequencies(frequencies);
 	}
 }

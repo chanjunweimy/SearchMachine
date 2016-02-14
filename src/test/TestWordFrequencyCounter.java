@@ -1,7 +1,7 @@
 package test;
 
 import static org.junit.Assert.*;
-import indexer.Frequency;
+import indexer.TermFrequencyPerDocument;
 import indexer.WordFrequencyCounter;
 
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ public class TestWordFrequencyCounter {
 		words.add("word");
 		words.add("sentence");
 		
-		List <Frequency> expected = new ArrayList <Frequency>();
-		Frequency f1 = new Frequency("sentence", 2);
-		Frequency f2 = new Frequency("repeats", 1);
-		Frequency f3 = new Frequency("the", 1);
-		Frequency f4 = new Frequency("this", 1);
-		Frequency f5 = new Frequency("word", 1);
+		List <TermFrequencyPerDocument> expected = new ArrayList <TermFrequencyPerDocument>();
+		TermFrequencyPerDocument f1 = new TermFrequencyPerDocument("sentence", 2);
+		TermFrequencyPerDocument f2 = new TermFrequencyPerDocument("repeats", 1);
+		TermFrequencyPerDocument f3 = new TermFrequencyPerDocument("the", 1);
+		TermFrequencyPerDocument f4 = new TermFrequencyPerDocument("this", 1);
+		TermFrequencyPerDocument f5 = new TermFrequencyPerDocument("word", 1);
 		expected.add(f1);
 		expected.add(f2);
 		expected.add(f3);
@@ -40,7 +40,7 @@ public class TestWordFrequencyCounter {
 	@Test
 	public void testEmpty() {
 		List <String> words = new ArrayList <String>();	
-		List <Frequency> expected = new ArrayList <Frequency>();
+		List <TermFrequencyPerDocument> expected = new ArrayList <TermFrequencyPerDocument>();
 		
 		verifyResult(words, expected);
 	}
@@ -50,8 +50,8 @@ public class TestWordFrequencyCounter {
 	 * @param words
 	 * @param expected
 	 */
-	private void verifyResult(List<String> words, List<Frequency> expected) {
-		List <Frequency> actual = WordFrequencyCounter.computeWordFrequencies(words);
+	private void verifyResult(List<String> words, List<TermFrequencyPerDocument> expected) {
+		List <TermFrequencyPerDocument> actual = WordFrequencyCounter.computeWordFrequencies(words);
 		assertTrue("the number of elements in the list", actual.size() == expected.size());
 		for (int i = 0; i < Math.min(expected.size(), actual.size()); i++) {
 			assertTrue("comparing the elements..", expected.get(i).toString().equals(actual.get(i).toString()));

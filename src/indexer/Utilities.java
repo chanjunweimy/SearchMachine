@@ -17,10 +17,10 @@ public class Utilities {
 	 * @author Jun
 	 *
 	 */
-	public static class SorterNGrams implements Comparator <Frequency> {
+	public static class SorterNGrams implements Comparator <TermFrequencyPerDocument> {
 
 		@Override
-		public int compare(Frequency arg0, Frequency arg1) {
+		public int compare(TermFrequencyPerDocument arg0, TermFrequencyPerDocument arg1) {
 			// TODO Auto-generated method stub
 			if (arg0.getFrequency() == arg1.getFrequency()) {
 				return arg0.getText().compareTo(arg1.getText());
@@ -32,34 +32,7 @@ public class Utilities {
 		}
 		
 	}
-	
-	/**
-	 * Comparator used to sort for PalindromeFrequencyCounter
-	 * @author Jun
-	 *
-	 */
-	public static class SorterPalindrome implements Comparator <Frequency> {
 
-		@Override
-		public int compare(Frequency arg0, Frequency arg1) {
-			// TODO Auto-generated method stub
-			if (arg0.getText().length() < arg1.getText().length()) {
-				return 1;
-			} else if (arg0.getText().length() > arg1.getText().length()) {
-				return -1;
-			}
-			
-			if (arg0.getFrequency() == arg1.getFrequency()) {
-				return arg0.getText().compareTo(arg1.getText());
-			} else if (arg0.getFrequency() < arg1.getFrequency()) {
-				return 1;
-			} else {
-				return -1;
-			}
-		}
-		
-	}
-	
 	
 	/**
 	 * Reads the input text file and splits it into alphanumeric tokens.
@@ -149,7 +122,7 @@ public class Utilities {
 	 * 
 	 * @param frequencies A list of frequencies.
 	 */
-	public static void printFrequencies(List<Frequency> frequencies) {
+	public static void printFrequencies(List<TermFrequencyPerDocument> frequencies) {
 		if (frequencies == null) {
 			return;
 		}
@@ -159,7 +132,7 @@ public class Utilities {
 		int totalCount = 0;
 		
 		int n = 0;
-		for (Frequency frequency : frequencies) {
+		for (TermFrequencyPerDocument frequency : frequencies) {
 			String frequencyText = frequency.getText();
 			int frequencyNum = frequency.getFrequency();
 			
@@ -178,7 +151,7 @@ public class Utilities {
 			System.out.println("Unique " + n + "-gram count: " + uniqueCount);
 		}
 		
-		for (Frequency frequency : frequencies) {
+		for (TermFrequencyPerDocument frequency : frequencies) {
 			String frequencyText = frequency.getText();
 			int frequencyNum = frequency.getFrequency();
 			System.out.println(frequencyText + "\t" + frequencyNum);

@@ -5,16 +5,16 @@ package indexer;
  * 
  * DO NOT MODIFY THIS CLASS
  */
-public final class Frequency {
+public final class TermFrequencyPerDocument {
 	private final String word;
 	private int frequency;
 	
-	public Frequency(String word) {
+	public TermFrequencyPerDocument(String word) {
 		this.word = word;
 		this.frequency = 0;
 	}
 	
-	public Frequency(String word, int frequency) {
+	public TermFrequencyPerDocument(String word, int frequency) {
 		this.word = word;
 		this.frequency = frequency;
 	}

@@ -1,7 +1,7 @@
 package test;
 
 import static org.junit.Assert.*;
-import indexer.Frequency;
+import indexer.TermFrequencyPerDocument;
 
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ public class TestFrequency {
 	@Test
 	public void testNormalTextString() {
 		String text = "something";
-		Frequency freq = new Frequency(text);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text);
 		assertTrue("the text is not modified", text.equals(freq.getText()));
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
@@ -22,7 +22,7 @@ public class TestFrequency {
 	@Test
 	public void testNullTextString() {
 		String text = null;
-		Frequency freq = new Frequency(text);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text);
 		assertTrue("the text is not modified", freq.getText() == null);
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
@@ -34,7 +34,7 @@ public class TestFrequency {
 	@Test
 	public void testEmptyTextString() {
 		String text = "";
-		Frequency freq = new Frequency(text);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text);
 		assertTrue("the text is not modified", freq.getText().equals(text));
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
@@ -47,7 +47,7 @@ public class TestFrequency {
 	public void testNormalTextStringWithFrequency() {
 		String text = "something";
 		int frequency = 0;
-		Frequency freq = new Frequency(text, frequency);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text, frequency);
 		assertTrue("the text is not modified", text.equals(freq.getText()));
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
@@ -60,7 +60,7 @@ public class TestFrequency {
 	public void testNullTextStringWithFrequency() {
 		String text = null;
 		int frequency = 0;
-		Frequency freq = new Frequency(text, frequency);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text, frequency);
 		assertTrue("the text is not modified", freq.getText() == null);
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
@@ -73,7 +73,7 @@ public class TestFrequency {
 	public void testEmptyTextStringWithFrequency() {
 		String text = "";
 		int frequency = 0;
-		Frequency freq = new Frequency(text, frequency);
+		TermFrequencyPerDocument freq = new TermFrequencyPerDocument(text, frequency);
 		assertTrue("the text is not modified", freq.getText().equals(text));
 		assertTrue("the frequency is set to default", freq.getFrequency() == 0);
 		
