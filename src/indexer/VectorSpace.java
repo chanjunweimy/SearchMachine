@@ -81,6 +81,15 @@ public class VectorSpace {
 				maxTermFrequencyInCorpus);
 	}
 	
+	public TreeSet <DocumentWeightPair> retrieveAllDocuments(String term) {
+		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
+		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
+			termDocumentWeight.add(pair);
+		}
+		return termDocumentWeight;
+	}
+
+	
 	public TreeSet <DocumentWeightPair> retrieveTopKDocuments(String term, int k) {
 		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
 		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
