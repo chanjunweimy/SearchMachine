@@ -14,6 +14,7 @@ import java.util.List;
  * It is a singleton class
  */
 public class Utilities {
+	
 	/**
 	 * Comparator used to sort the return list of NGramFrequencyCounter
 	 * @author Jun
@@ -31,6 +32,22 @@ public class Utilities {
 				return -1;
 			}
 		}
+		
+	}
+	
+	public static class SorterOfDocumentsByWeightedTermFrequency implements Comparator <DocumentWeightPair> {
+
+		@Override
+		public int compare(DocumentWeightPair o1, DocumentWeightPair o2) {
+			if (o1.weight == o2.weight) {
+				return o1.documentVector.getUrl().compareTo(o2.documentVector.getUrl());
+			} else if (o1.weight < o2.weight) {
+				return 1;
+			}
+			return -1;
+		}
+
+		
 		
 	}
 

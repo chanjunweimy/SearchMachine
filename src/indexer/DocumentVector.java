@@ -20,18 +20,24 @@ public class DocumentVector {
 	private HashMap <String, Integer> _termFrequencyMap = null;
 	
 	private String _documentName = null;
+	private String _url = null;
 	
 	private HashMap <String, Integer> _maxTermFrequencyInCorpus = null;
 	
 	
 	
 	public DocumentVector(String documentName, 
+						  String url,
 						  List <TermFrequencyPerDocument> termFrequencies) {
-		initializeDocumentVector(documentName, termFrequencies);
+		initializeDocumentVector(documentName, url, termFrequencies);
 	}
 	
 	public void setMaxTermFrequencyInCorpus(HashMap <String, Integer> maxTermFrequencyInCorpus) {
 		_maxTermFrequencyInCorpus = maxTermFrequencyInCorpus;
+	}
+	
+	public boolean hasTerm(String term) {
+		return _termFrequencyMap.containsKey(term);
 	}
 
 	/**
@@ -73,15 +79,19 @@ public class DocumentVector {
 		return _documentName;
 	}
 	
+	public String getUrl() {
+		return _url;
+	}
 	
 	/**
 	 * @param documentName
 	 * @param termFrequencies
 	 */
 	private void initializeDocumentVector(String documentName,
+			String url,
 			List<TermFrequencyPerDocument> termFrequencies) {
 		_documentName = documentName;
-		
+		_url = url;
 		initializeTermFrequencyMap(termFrequencies);
 	}
 
