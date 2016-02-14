@@ -6,10 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * A collection of utility methods for text processing.
+ * It is a singleton class
  */
 public class Utilities {
 	/**
@@ -35,6 +37,31 @@ public class Utilities {
 
 	
 	/**
+	 * the hashset used to eliminate stop words
+	 */
+	private HashSet<String> _stopWordsSet = null;
+	
+	/**
+	 * file used to store stop words
+	 */
+	private final static String FILE_STOPWORDS = "StopWords.txt";
+	
+	private static Utilities _utilities = null;
+	
+	/**
+	 * implementing singleton
+	 */
+	private Utilities() {
+	}
+	
+	public static Utilities getObject() {
+		if (_utilities == null) {
+			_utilities = new Utilities();
+		}
+		return _utilities;
+	}
+	
+	/**
 	 * Reads the input text file and splits it into alphanumeric tokens.
 	 * Returns an ArrayList of these tokens, ordered according to their
 	 * occurrence in the original text file.
@@ -54,7 +81,7 @@ public class Utilities {
 	 * @param input The file to read in and tokenize.
 	 * @return The list of tokens (words) from the input file, ordered by occurrence.
 	 */
-	public static ArrayList<String> tokenizeFile(File input) {
+	public ArrayList<String> tokenizeFile(File input) {
 		// TODO Write body!
 		if (input == null) {
 			return null;
@@ -122,7 +149,7 @@ public class Utilities {
 	 * 
 	 * @param frequencies A list of frequencies.
 	 */
-	public static void printFrequencies(List<TermFrequencyPerDocument> frequencies) {
+	public void printFrequencies(List<TermFrequencyPerDocument> frequencies) {
 		if (frequencies == null) {
 			return;
 		}

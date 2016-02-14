@@ -34,7 +34,7 @@ public class TestUtilities {
 	public void testFileExtremeNull() {
 		File file = null;
 		
-		ArrayList <String> words = Utilities.tokenizeFile(file);
+		ArrayList <String> words = Utilities.getObject().tokenizeFile(file);
 		assertTrue("the list should be null as the file is null", words == null);
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
@@ -42,7 +42,7 @@ public class TestUtilities {
 		
 		
 		
-		Utilities.printFrequencies(frequencies);		
+		Utilities.getObject().printFrequencies(frequencies);		
 		String expectedOutput = "";
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 		
@@ -54,7 +54,7 @@ public class TestUtilities {
 		File file = new File(filename);
 		assertTrue ("check if the file is in the directory", file.exists() && file.isFile());
 		
-		ArrayList <String> words = Utilities.tokenizeFile(file);
+		ArrayList <String> words = Utilities.getObject().tokenizeFile(file);
 		ArrayList <String> expectedArrayList = new ArrayList <String>();
 		assertTrue("number of words is correct", words.size() == expectedArrayList.size());
 		for (int i = 0; i < words.size(); i++) {
@@ -62,7 +62,7 @@ public class TestUtilities {
 		}
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
-		Utilities.printFrequencies(frequencies);		
+		Utilities.getObject().printFrequencies(frequencies);		
 		String expectedOutput = "Total 0-gram count: 0\r\nUnique 0-gram count: 0\r\n";
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 		
@@ -74,7 +74,7 @@ public class TestUtilities {
 		File file = new File(filename);
 		assertTrue ("check if the file is in the directory", file.exists() && file.isFile());
 		
-		ArrayList <String> words = Utilities.tokenizeFile(file);
+		ArrayList <String> words = Utilities.getObject().tokenizeFile(file);
 		ArrayList <String> expectedArrayList = new ArrayList <String>();
 		expectedArrayList.add("an");
 		expectedArrayList.add("input");
@@ -114,7 +114,7 @@ public class TestUtilities {
 		}
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
-		Utilities.printFrequencies(frequencies);		
+		Utilities.getObject().printFrequencies(frequencies);		
 		String expectedOutput = "Total item count: 28\r\nUnique item count: 22\r\n"
 				+ "you\t3\r\n"
 				+ "is\t2\r\n"
@@ -143,7 +143,7 @@ public class TestUtilities {
 
 		_outContent.reset();
 		Collections.sort(frequencies, new Utilities.SorterNGrams());
-		Utilities.printFrequencies(frequencies);
+		Utilities.getObject().printFrequencies(frequencies);
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 	}
 
@@ -153,7 +153,7 @@ public class TestUtilities {
 		File file = new File(filename);
 		assertTrue ("check if the file is in the directory", file.exists() && file.isFile());
 		
-		ArrayList <String> words = Utilities.tokenizeFile(file);
+		ArrayList <String> words = Utilities.getObject().tokenizeFile(file);
 		ArrayList <String> expectedArrayList = new ArrayList <String>();
 		expectedArrayList.add("do");
 		expectedArrayList.add("geese");
@@ -169,7 +169,7 @@ public class TestUtilities {
 		}
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
-		Utilities.printFrequencies(frequencies);		
+		Utilities.getObject().printFrequencies(frequencies);		
 		String expectedOutput = "Total item count: 7\r\nUnique item count: 7\r\n"
 				+ "abba\t1\r\n"
 				+ "bat\t1\r\n"

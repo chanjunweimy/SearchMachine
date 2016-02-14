@@ -1,7 +1,6 @@
 package indexer;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,12 +11,19 @@ import java.util.List;
  * It is a singleton
  */
 public final class WordFrequencyCounter {
+	/**
+	 * the object used for implementing singleton
+	 */
 	private static WordFrequencyCounter _counter = null;
+	
+	
 	
 	/**
 	 * This class should not be instantiated.
 	 */
-	private WordFrequencyCounter() {}
+	private WordFrequencyCounter() {
+	}
+
 	
 	public static WordFrequencyCounter getObject() {
 		if (_counter == null) {
@@ -80,17 +86,5 @@ public final class WordFrequencyCounter {
 		
 		Collections.sort(frequencies, new Utilities.SorterNGrams());
 		return frequencies;	
-	}
-	
-	/**
-	 * Runs the word frequency counter. The input should be the path to a text file.
-	 * 
-	 * @param args The first element should contain the path to a text file.
-	 */
-	public static void main(String[] args) {
-		File file = new File(args[0]);
-		List<String> words = Utilities.tokenizeFile(file);
-		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
-		Utilities.printFrequencies(frequencies);
 	}
 }
