@@ -37,7 +37,7 @@ public class TestUtilities {
 		ArrayList <String> words = Utilities.tokenizeFile(file);
 		assertTrue("the list should be null as the file is null", words == null);
 		
-		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		assertTrue("should have null Frequencies as the file is null", frequencies == null);
 		
 		
@@ -61,7 +61,7 @@ public class TestUtilities {
 			assertTrue("word extracted from file is same with expected", words.get(i).equals(expectedArrayList.get(i)));
 		}
 		
-		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.printFrequencies(frequencies);		
 		String expectedOutput = "Total 0-gram count: 0\r\nUnique 0-gram count: 0\r\n";
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
@@ -113,7 +113,7 @@ public class TestUtilities {
 			assertTrue("word extracted from file is same with expected", words.get(i).equals(expectedArrayList.get(i)));
 		}
 		
-		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.printFrequencies(frequencies);		
 		String expectedOutput = "Total item count: 28\r\nUnique item count: 22\r\n"
 				+ "you\t3\r\n"
@@ -168,7 +168,7 @@ public class TestUtilities {
 			assertTrue("word extracted from file is same with expected", words.get(i).equals(expectedArrayList.get(i)));
 		}
 		
-		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.printFrequencies(frequencies);		
 		String expectedOutput = "Total item count: 7\r\nUnique item count: 7\r\n"
 				+ "abba\t1\r\n"

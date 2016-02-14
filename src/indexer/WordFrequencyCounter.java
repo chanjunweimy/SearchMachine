@@ -9,12 +9,23 @@ import java.util.List;
 
 /**
  * Counts the total number of words and their frequencies in a text file.
+ * It is a singleton
  */
 public final class WordFrequencyCounter {
+	private static WordFrequencyCounter _counter = null;
+	
 	/**
 	 * This class should not be instantiated.
 	 */
 	private WordFrequencyCounter() {}
+	
+	public static WordFrequencyCounter getObject() {
+		if (_counter == null) {
+			_counter = new WordFrequencyCounter();
+		}
+		return _counter;
+	}
+	
 	
 	/**
 	 * Takes the input list of words and processes it, returning a list
@@ -43,7 +54,7 @@ public final class WordFrequencyCounter {
 	 * @param words A list of words.
 	 * @return A list of word frequencies, ordered by decreasing frequency.
 	 */
-	public static List<TermFrequencyPerDocument> computeWordFrequencies(List<String> words) {
+	public List<TermFrequencyPerDocument> computeWordFrequencies(List<String> words) {
 		// TODO Write body!
 		if (words == null) {
 			return null;
@@ -79,7 +90,7 @@ public final class WordFrequencyCounter {
 	public static void main(String[] args) {
 		File file = new File(args[0]);
 		List<String> words = Utilities.tokenizeFile(file);
-		List<TermFrequencyPerDocument> frequencies = computeWordFrequencies(words);
+		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.printFrequencies(frequencies);
 	}
 }

@@ -51,7 +51,7 @@ public class TestWordFrequencyCounter {
 	 * @param expected
 	 */
 	private void verifyResult(List<String> words, List<TermFrequencyPerDocument> expected) {
-		List <TermFrequencyPerDocument> actual = WordFrequencyCounter.computeWordFrequencies(words);
+		List <TermFrequencyPerDocument> actual = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		assertTrue("the number of elements in the list", actual.size() == expected.size());
 		for (int i = 0; i < Math.min(expected.size(), actual.size()); i++) {
 			assertTrue("comparing the elements..", expected.get(i).toString().equals(actual.get(i).toString()));
