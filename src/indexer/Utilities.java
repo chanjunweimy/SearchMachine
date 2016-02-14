@@ -23,7 +23,6 @@ public class Utilities {
 
 		@Override
 		public int compare(TermFrequencyPerDocument arg0, TermFrequencyPerDocument arg1) {
-			// TODO Auto-generated method stub
 			if (arg0.getFrequency() == arg1.getFrequency()) {
 				return arg0.getText().compareTo(arg1.getText());
 			} else if (arg0.getFrequency() < arg1.getFrequency()) {
@@ -52,6 +51,19 @@ public class Utilities {
 	 * implementing singleton
 	 */
 	private Utilities() {
+		initializeStopWordsSet();
+	}
+
+	/**
+	 * 
+	 */
+	private void initializeStopWordsSet() {
+		_stopWordsSet = new HashSet<String>();
+		File stopWordFile = new File(FILE_STOPWORDS);
+		ArrayList<String> stopWords = tokenizeFile(stopWordFile);
+		for (String word : stopWords) {
+			_stopWordsSet.add(word);
+		}
 	}
 	
 	public static Utilities getObject() {
@@ -82,32 +94,42 @@ public class Utilities {
 	 * @return The list of tokens (words) from the input file, ordered by occurrence.
 	 */
 	public ArrayList<String> tokenizeFile(File input) {
-		// TODO Write body!
-		if (input == null) {
-			return null;
-		} else if (!input.isFile()) {
-			return null;
-		}
-		
-		ArrayList <String>  data = new ArrayList<String>();
-		try (BufferedReader br = new BufferedReader(new FileReader(input))) {
-		    for(String line; (line = br.readLine()) != null; ) {
-		        line = line.replaceAll("[^A-Za-z0-9 ]", "");
-		        line = line.toLowerCase();
-		        String[] tokens = line.split(" ");
-		        for (String token : tokens) {
-		        	token = token.trim();
-		        	if (!token.isEmpty()) {
-		        		data.add(token);	
-		        	}
-		        }
-		    }
-		    br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		return data;
+		return tokenizeFile(input, true);
+	}
+	
+	public ArrayList<String> tokenizeFileWithoutStopWords(File input) {
+		return tokenizeFile(input, false);
+	}
+	
+	private ArrayList<String> tokenizeFile(File input, boolean hasStopWord) {
+				if (input == null) {
+					return null;
+				} else if (!input.isFile()) {
+					return null;
+				}
+				
+				ArrayList <String>  data = new ArrayList<String>();
+				try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+				    for(String line; (line = br.readLine()) != null; ) {
+				        line = line.replaceAll("[^A-Za-z0-9 ]", "");
+				        line = line.toLowerCase();
+				        String[] tokens = line.split(" ");
+				        for (String token : tokens) {
+				        	token = token.trim();
+				        	if (token.isEmpty()) {
+				        		continue;
+				        	} else if (!hasStopWord && _stopWordsSet.contains(token)) {
+				        		continue;
+				        	}
+			        		data.add(token);	
+				        }
+				    }
+				    br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.exit(-1);
+				}
+				return data;
 	}
 	
 	/**
@@ -154,7 +176,6 @@ public class Utilities {
 			return;
 		}
 		
-		// TODO Write body!
 		int uniqueCount = frequencies.size();
 		int totalCount = 0;
 		
