@@ -137,7 +137,9 @@ public class VectorSpace {
 	 * @return
 	 */
 	public TreeSet <DocumentWeightPair> retrieveAllDocuments(String term) {
-		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
+		Comparator <DocumentWeightPair> comparator = new Utilities.SorterOfDocumentsByWeightedTermFrequency();
+		
+		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>(comparator);
 		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
 			termDocumentWeight.add(pair);
 		}
@@ -150,7 +152,13 @@ public class VectorSpace {
 	 * @return
 	 */
 	public TreeSet <DocumentWeightPair> retrieveTopKDocuments(String term, int k) {
-		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>();
+		Comparator <DocumentWeightPair> comparator = new Utilities.SorterOfDocumentsByWeightedTermFrequency();
+
+		TreeSet <DocumentWeightPair> termDocumentWeight = new TreeSet <DocumentWeightPair>(comparator);
+		if (!_termDocumentMap.containsKey(term)) {
+			return termDocumentWeight;
+		}
+		
 		for (DocumentWeightPair pair : _termDocumentMap.get(term)) {
 			termDocumentWeight.add(pair);
 			if (termDocumentWeight.size() >= k) {
