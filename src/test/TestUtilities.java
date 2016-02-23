@@ -63,7 +63,7 @@ public class TestUtilities {
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.getObject().printFrequencies(frequencies);		
-		String expectedOutput = "Total 0-gram count: 0\r\nUnique 0-gram count: 0\r\n";
+		String expectedOutput = "Total 0-gram count: 0" + System.lineSeparator() + "Unique 0-gram count: 0" + System.lineSeparator();
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 		
 	}
@@ -115,29 +115,29 @@ public class TestUtilities {
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.getObject().printFrequencies(frequencies);		
-		String expectedOutput = "Total item count: 28\r\nUnique item count: 22\r\n"
-				+ "you\t3\r\n"
-				+ "is\t2\r\n"
-				+ "sentence\t2\r\n"
-				+ "think\t2\r\n"
-				+ "this\t2\r\n"
-				+ "abba\t1\r\n"
-				+ "an\t1\r\n"
-				+ "bat\t1\r\n"
-				+ "do\t1\r\n"
-				+ "geese\t1\r\n"
-				+ "god\t1\r\n"
-				+ "how\t1\r\n"
-				+ "input\t1\r\n"
-				+ "it\t1\r\n"
-				+ "know\t1\r\n"
-				+ "or\t1\r\n"
-				+ "repeats\t1\r\n"
-				+ "see\t1\r\n"
-				+ "string\t1\r\n"
-				+ "tab\t1\r\n"
-				+ "the\t1\r\n"
-				+ "word\t1\r\n";
+		String expectedOutput = "Total item count: 28" + System.lineSeparator() + "Unique item count: 22" + System.lineSeparator()
+				+ "you\t3" + System.lineSeparator() 
+				+ "is\t2" + System.lineSeparator()
+				+ "sentence\t2" + System.lineSeparator()
+				+ "think\t2" + System.lineSeparator()
+				+ "this\t2" + System.lineSeparator()
+				+ "abba\t1" + System.lineSeparator()
+				+ "an\t1" + System.lineSeparator()
+				+ "bat\t1" + System.lineSeparator()
+				+ "do\t1" + System.lineSeparator()
+				+ "geese\t1" + System.lineSeparator()
+				+ "god\t1" + System.lineSeparator()
+				+ "how\t1" + System.lineSeparator()
+				+ "input\t1" + System.lineSeparator()
+				+ "it\t1" + System.lineSeparator()
+				+ "know\t1" + System.lineSeparator()
+				+ "or\t1" + System.lineSeparator()
+				+ "repeats\t1" + System.lineSeparator()
+				+ "see\t1" + System.lineSeparator()
+				+ "string\t1" + System.lineSeparator()
+				+ "tab\t1" + System.lineSeparator()
+				+ "the\t1" + System.lineSeparator()
+				+ "word\t1" + System.lineSeparator();
 
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 
@@ -170,7 +170,8 @@ public class TestUtilities {
 		
 		List<TermFrequencyPerDocument> frequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 		Utilities.getObject().printFrequencies(frequencies);		
-		String expectedOutput = "Total item count: 7\r\nUnique item count: 7\r\n"
+		String expectedOutput = "Total item count: 7" + System.lineSeparator()
+				+ "Unique item count: 7" + System.lineSeparator()
 				+ "abba\t1\r\n"
 				+ "bat\t1\r\n"
 				+ "do\t1\r\n"
