@@ -1,3 +1,11 @@
+/**
+ * @author
+ * Amy Yeung
+ * Chan Jun Wei
+ * Laureen Ma 
+ * Matt Levin
+ */
+
 package test;
 
 import static org.junit.Assert.*;

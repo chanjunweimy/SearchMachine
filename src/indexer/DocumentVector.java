@@ -1,3 +1,11 @@
+/**
+ * @author
+ * Amy Yeung
+ * Chan Jun Wei
+ * Laureen Ma 
+ * Matt Levin
+ */
+
 package indexer;
 
 import java.util.HashMap;
