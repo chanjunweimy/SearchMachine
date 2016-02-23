@@ -19,6 +19,16 @@ import java.util.Vector;
  *
  */
 public class VectorSpace {
+	private static final String STRING_DOCUMENT_WEIGHT_SEPARATOR = "|";
+
+	private static final String STRING_TERM_SEPARATOR = ":==:";
+
+	private static final String STRING_TERM_DOCUMENT = "termID -> docID, term frequency";
+
+	private static final String STRING_DOCUMENT_TERM_SEPARATOR = "----------";
+
+	private static final String STRING_DOCUMENT_VECTOR = "document vector:";
+
 	/**
 	 * The number of documents that we indexed. 
 	 * It is used in calculating idf.
@@ -203,6 +213,59 @@ public class VectorSpace {
 		}
 	}
 	
+	public void trainByIndexesFile(String filename) {
+		boolean isDocumentVector = false;
+		boolean isTermDocument = false;
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			for (String line; (line = br.readLine()) != null;) {
+				if (line.equals(VectorSpace.STRING_DOCUMENT_VECTOR)) {
+					isDocumentVector = true;
+				} else if (line.equals(VectorSpace.STRING_DOCUMENT_TERM_SEPARATOR)) {
+					isDocumentVector = false;
+				} else if (line.equals(VectorSpace.STRING_TERM_DOCUMENT)) {
+					isTermDocument = true;
+				}
+				
+				if (isDocumentVector) {
+					DocumentVector documentVector = DocumentVector.readDocumentVectorLine(line);
+					_documentVectors.add(documentVector);
+				} else if (isTermDocument) {
+					addToTermDocumentMap(line);
+				}
+			}
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+
+	/**
+	 * @param line
+	 */
+	private void addToTermDocumentMap(String line) {
+		String[] tokens = line.split(STRING_TERM_SEPARATOR);
+		String term = tokens[0];
+		TreeSet<DocumentWeightPair> documentWeightPairs = new TreeSet<DocumentWeightPair>();
+		String[] documentWeights = tokens[1].split(STRING_DOCUMENT_WEIGHT_SEPARATOR);
+		for (String documentWeight : documentWeights) {
+			documentWeight = documentWeight.trim();
+			if (documentWeight.isEmpty()) {
+				continue;
+			}
+			String[] pair = documentWeight.split(" ");
+			int docId = Integer.parseInt(pair[0]);
+			DocumentVector documentVector = _documentVectors.get(docId);
+			double weight = Double.parseDouble(pair[1]);
+			
+			DocumentWeightPair dwp = new DocumentWeightPair();
+			dwp.documentVector = documentVector;
+			dwp.weight = weight;
+			documentWeightPairs.add(dwp);
+		}
+		_termDocumentMap.put(term, documentWeightPairs);
+	}
+	
 	public void saveTermDocumentMap(String filename) {
 		System.out.print("number of documents: ");
 		System.out.println(_documentVectors.size());
@@ -210,21 +273,21 @@ public class VectorSpace {
 		System.out.println(_termDocumentMap.size());
 		
 		writeToFile(filename, false, "");
-		writeToFile(filename, true, "document vector:" + System.lineSeparator());
+		writeToFile(filename, true, VectorSpace.STRING_DOCUMENT_VECTOR + System.lineSeparator());
 		for (DocumentVector documentVector : _documentVectors) {
 			writeToFile(filename, true, documentVector.toString() + System.lineSeparator());
 		}
 
-		writeToFile(filename, true, "----------" + System.lineSeparator());
-		writeToFile(filename, true, "termID -> docID, term frequency" + System.lineSeparator());
+		writeToFile(filename, true, VectorSpace.STRING_DOCUMENT_TERM_SEPARATOR + System.lineSeparator());
+		writeToFile(filename, true, VectorSpace.STRING_TERM_DOCUMENT + System.lineSeparator());
 		for (Map.Entry<String, TreeSet<DocumentWeightPair> > termDocuments : _termDocumentMap.entrySet()) {
 		    String term = termDocuments.getKey();
 		    TreeSet <DocumentWeightPair> pairs = termDocuments.getValue();
 		    
-		    writeToFile(filename, true, term + ":==:|");
+		    writeToFile(filename, true, term + VectorSpace.STRING_TERM_SEPARATOR + VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
 		    for (DocumentWeightPair pair : pairs) {
 		    	writeToFile(filename, true, pair.documentVector.getDocId() + " " +
-		    							    pair.weight + "|");
+		    							    pair.weight + VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
 		    }
 		    
 		    writeToFile(filename, true, System.lineSeparator());

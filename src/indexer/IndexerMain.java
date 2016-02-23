@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.TreeSet;
 
 public class IndexerMain {
-	//private static final String DIR_DATA = "data/";
+	private static final String DIR_DATA = "data/";
 	private static final String DIR_TEST_NORMAL = "test_normal/";
 	private static final int K = 5;
 	
@@ -86,7 +86,7 @@ public class IndexerMain {
 		long startTime = System.currentTimeMillis();
 
 		IndexerMain indexer = new IndexerMain();
-		indexer.trainIndexerByWtf(DIR_TEST_NORMAL);
+		indexer.trainIndexerByWtf(DIR_DATA);
 		//indexer.printIndexes();
 		
 		indexer.saveIndexes("indexes.txt");

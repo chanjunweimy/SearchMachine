@@ -29,6 +29,33 @@ public class DocumentVector {
 	private HashMap <String, Integer> _maxTermFrequencyInCorpus = null;
 	
 	
+	public static DocumentVector readDocumentVectorLine(String line) {
+		if (line == null || line.isEmpty()) {
+			return null;
+		}
+		
+		line = line.trim();
+		String[] tokens = line.split(SEPARATOR);
+		
+		if (tokens == null || tokens.length < 3) {
+			return null;
+		}
+		
+		int docId = Integer.parseInt(tokens[0]);
+		String documentName = tokens[1];
+		String url = tokens[2];
+		HashMap <String, Integer> termFrequencyMap = new HashMap <String, Integer>();
+		for (int i = 3; i < tokens.length; i++) {
+			String[] termFreq = tokens[i].split(" ");
+			if (termFreq == null || termFreq.length != 2) {
+				continue;
+			}
+			String term = termFreq[0];
+			int freq = Integer.parseInt(termFreq[1]);
+			termFrequencyMap.put(term, freq);
+		}
+		return new DocumentVector(docId, documentName, url, termFrequencyMap);
+	}
 	
 	public DocumentVector(String documentName, 
 						  String url,
@@ -36,6 +63,29 @@ public class DocumentVector {
 		initializeDocumentVector(documentName, url, termFrequencies);
 	}
 	
+	private DocumentVector(int docId,
+			  	           String documentName, 
+			  			   String url,
+			  		       HashMap <String, Integer> termFrequencyMap) {
+		setDocId(docId);
+		setDocumentName(documentName);
+		setUrl(url);
+		setTermFrequencyMap(termFrequencyMap);
+		
+	}
+	
+	private void setTermFrequencyMap(HashMap<String, Integer> termFrequencyMap) {
+		_termFrequencyMap = termFrequencyMap;
+	}
+
+	private void setUrl(String url) {
+		_url = url;
+	}
+
+	private void setDocumentName(String documentName) {
+		_documentName = documentName;		
+	}
+
 	public void setMaxTermFrequencyInCorpus(HashMap <String, Integer> maxTermFrequencyInCorpus) {
 		_maxTermFrequencyInCorpus = maxTermFrequencyInCorpus;
 	}
