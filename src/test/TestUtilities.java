@@ -172,13 +172,13 @@ public class TestUtilities {
 		Utilities.getObject().printFrequencies(frequencies);		
 		String expectedOutput = "Total item count: 7" + System.lineSeparator()
 				+ "Unique item count: 7" + System.lineSeparator()
-				+ "abba\t1\r\n"
-				+ "bat\t1\r\n"
-				+ "do\t1\r\n"
-				+ "geese\t1\r\n"
-				+ "god\t1\r\n"
-				+ "see\t1\r\n"
-				+ "tab\t1\r\n";
+				+ "abba\t1" + System.lineSeparator()
+				+ "bat\t1" + System.lineSeparator()
+				+ "do\t1" + System.lineSeparator()
+				+ "geese\t1" + System.lineSeparator()
+				+ "god\t1" + System.lineSeparator()
+				+ "see\t1" + System.lineSeparator()
+				+ "tab\t1" + System.lineSeparator();
 				
 		assertTrue("the output is correct", expectedOutput.equals(_outContent.toString()));
 
