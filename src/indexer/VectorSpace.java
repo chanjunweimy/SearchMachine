@@ -3,6 +3,7 @@ package indexer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.Vector;
 
 /**
  * The Vector Space of the Vector Space Model
@@ -28,6 +30,7 @@ public class VectorSpace {
 	 * The key is the terms, and they are mapped to the documents that contain them.
 	 */
 	private HashMap <String, TreeSet<DocumentWeightPair>> _termDocumentMap = null;
+	private Vector <DocumentVector> _documentVectors = null;
 	
 	/**
 	 * construct VectorSpace as a singleton object
@@ -35,6 +38,8 @@ public class VectorSpace {
 	private static VectorSpace _vectorSpace = null;
 	
 	private VectorSpace() {
+		_documentVectors = new Vector <DocumentVector>();
+		_termDocumentMap = new HashMap <String, TreeSet<DocumentWeightPair>>();
 	}
 	
 	public static VectorSpace getObject() {
@@ -51,8 +56,6 @@ public class VectorSpace {
 	 * @return
 	 */
 	public void trainByWtf(File[] indexingFiles) {
-		_termDocumentMap = new HashMap <String, TreeSet<DocumentWeightPair>>();
-
 		_corpusSize = indexingFiles.length;
 		
 		for (File file : indexingFiles) {
@@ -68,6 +71,8 @@ public class VectorSpace {
 			List <TermFrequencyPerDocument> termFrequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 			
 			DocumentVector documentVector = new DocumentVector(documentName, url, termFrequencies);
+			documentVector.setDocId(_documentVectors.size());
+			_documentVectors.add(documentVector);
 			
 			for (TermFrequencyPerDocument termFrequency : termFrequencies) {
 				setupTermDocumentMapByWTF(documentVector, termFrequency);
@@ -102,7 +107,6 @@ public class VectorSpace {
 	 * @param indexingFiles
 	 */
 	public void trainByNtf(File[] indexingFiles) {
-		_termDocumentMap = new HashMap <String, TreeSet<DocumentWeightPair>>();
 		_corpusSize = indexingFiles.length;
 		List <DocumentVector> documentVectorSpace = new ArrayList <DocumentVector>();
 		TreeSet <String> corpusWords = new TreeSet <String>();
@@ -121,6 +125,9 @@ public class VectorSpace {
 			List <TermFrequencyPerDocument> termFrequencies = WordFrequencyCounter.getObject().computeWordFrequencies(words);
 			DocumentVector documentVector = new DocumentVector(documentName, url, termFrequencies);
 			documentVectorSpace.add(documentVector);
+			documentVector.setDocId(_documentVectors.size());
+			_documentVectors.add(documentVector);
+
 			for (TermFrequencyPerDocument termFrequency : termFrequencies) {
 				maxTermFrequencyInCorpus = setupMaxFrequency(maxTermFrequencyInCorpus, termFrequency);	
 				corpusWords.add(termFrequency.getText());
@@ -194,6 +201,58 @@ public class VectorSpace {
 		    }
 		    System.out.println("");
 		}
+	}
+	
+	public void saveTermDocumentMap(String filename) {
+		System.out.print("number of documents: ");
+		System.out.println(_documentVectors.size());
+		System.out.print("number of [unique] words (without stop words): ");
+		System.out.println(_termDocumentMap.size());
+		
+		writeToFile(filename, false, "");
+		writeToFile(filename, true, "document vector:" + System.lineSeparator());
+		for (DocumentVector documentVector : _documentVectors) {
+			writeToFile(filename, true, documentVector.toString() + System.lineSeparator());
+		}
+
+		writeToFile(filename, true, "----------" + System.lineSeparator());
+		writeToFile(filename, true, "termID -> docID, term frequency" + System.lineSeparator());
+		for (Map.Entry<String, TreeSet<DocumentWeightPair> > termDocuments : _termDocumentMap.entrySet()) {
+		    String term = termDocuments.getKey();
+		    TreeSet <DocumentWeightPair> pairs = termDocuments.getValue();
+		    
+		    writeToFile(filename, true, term + ":==:|");
+		    for (DocumentWeightPair pair : pairs) {
+		    	writeToFile(filename, true, pair.documentVector.getDocId() + " " +
+		    							    pair.weight + "|");
+		    }
+		    
+		    writeToFile(filename, true, System.lineSeparator());
+		}
+	}
+	
+	/**
+	 * helper method to write content to file
+	 * 
+	 * @param filename
+	 *            the file you want to write into
+	 * @param isAppend
+	 *            whether to overwrite the file
+	 * @param line
+	 *            the content that you want to write into
+	 * @return
+	 */
+	private boolean writeToFile(String filename, boolean isAppend,
+			String line) {
+		try (FileWriter fw = new FileWriter(filename, isAppend)) {
+			fw.write(line);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
 	}
 
 

@@ -74,15 +74,35 @@ public class IndexerMain {
 		return ans;
 	}
 	
+	public void saveIndexes(String filename) {
+		_vectorSpace.saveTermDocumentMap(filename);
+	}
+	
 	public void printIndexes() {
 		_vectorSpace.printTermDocumentMap();
 	}
 	
 	public static void main(String[] args) {
+		long startTime = System.currentTimeMillis();
+
 		IndexerMain indexer = new IndexerMain();
 		indexer.trainIndexerByWtf(DIR_TEST_NORMAL);
 		//indexer.printIndexes();
 		
+		indexer.saveIndexes("indexes.txt");
+		
+		long endTime = System.currentTimeMillis();
+		long totalTime = endTime - startTime;		
+		System.out.println("total time taken: " + totalTime);
+		
+		//startCLInterface(indexer);
+		
+	}
+
+	/**
+	 * @param indexer
+	 */
+	private static void startCLInterface(IndexerMain indexer) {
 		try (Scanner sc = new Scanner(System.in)) {
 			while (sc.hasNextLine()) {
 				String query = sc.nextLine();

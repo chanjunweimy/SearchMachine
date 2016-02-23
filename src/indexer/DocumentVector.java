@@ -2,6 +2,7 @@ package indexer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Document Vector in the Vector Space Model.
@@ -9,6 +10,8 @@ import java.util.List;
  *
  */
 public class DocumentVector {
+	public static final String SEPARATOR = "::";
+
 	/**
 	 * The smoothing term used in ntf
 	 */
@@ -21,6 +24,7 @@ public class DocumentVector {
 	
 	private String _documentName = null;
 	private String _url = null;
+	private int _docId = 0;
 	
 	private HashMap <String, Integer> _maxTermFrequencyInCorpus = null;
 	
@@ -104,6 +108,31 @@ public class DocumentVector {
 		for (TermFrequencyPerDocument tf : termFrequencies) {
 			_termFrequencyMap.put(tf.getText(), tf.getFrequency());
 		}
+	}
+
+	public int getDocId() {
+		return _docId;
+	}
+
+	public void setDocId(int _docId) {
+		this._docId = _docId;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(_docId);
+		buffer.append(SEPARATOR);
+		buffer.append(_documentName);
+		buffer.append(SEPARATOR);
+		buffer.append(_url);
+		for (Map.Entry<String, Integer> termFrequency : _termFrequencyMap.entrySet()) {
+			buffer.append(SEPARATOR);
+			buffer.append(termFrequency.getKey());
+			buffer.append(" ");
+			buffer.append(termFrequency.getValue().intValue());
+		}
+		return buffer.toString();
 	}
 
 }

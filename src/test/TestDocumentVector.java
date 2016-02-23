@@ -44,7 +44,6 @@ public class TestDocumentVector {
 	
 	@Test
 	public void testNTF(){
-		double ALPHA = .4;
 		HashMap <String, Integer> termFreqMap = new HashMap<String,Integer>();
 		termFreqMap.put("hello", 3);
 		termFreqMap.put("test", 10);
