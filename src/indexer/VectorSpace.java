@@ -281,25 +281,34 @@ public class VectorSpace {
 		System.out.println(_termDocumentMap.size());
 		
 		writeToFile(filename, false, "");
-		writeToFile(filename, true, VectorSpace.STRING_DOCUMENT_VECTOR + System.lineSeparator());
-		for (DocumentVector documentVector : _documentVectors) {
-			writeToFile(filename, true, documentVector.toString() + System.lineSeparator());
-		}
 
-		writeToFile(filename, true, VectorSpace.STRING_DOCUMENT_TERM_SEPARATOR + System.lineSeparator());
-		writeToFile(filename, true, VectorSpace.STRING_TERM_DOCUMENT + System.lineSeparator());
-		for (Map.Entry<String, TreeSet<DocumentWeightPair> > termDocuments : _termDocumentMap.entrySet()) {
-		    String term = termDocuments.getKey();
-		    TreeSet <DocumentWeightPair> pairs = termDocuments.getValue();
-		    
-		    writeToFile(filename, true, term + VectorSpace.STRING_TERM_SEPARATOR + VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
-		    for (DocumentWeightPair pair : pairs) {
-		    	writeToFile(filename, true, pair.documentVector.getDocId() + " " +
-		    							    pair.weight + VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
-		    }
-		    
-		    writeToFile(filename, true, System.lineSeparator());
+		try (FileWriter fw = new FileWriter(filename, true)) {
+			fw.write(VectorSpace.STRING_DOCUMENT_VECTOR + System.lineSeparator());
+			for (DocumentVector documentVector : _documentVectors) {
+				fw.write(documentVector.toString() + System.lineSeparator());
+			}
+
+			fw.write(VectorSpace.STRING_DOCUMENT_TERM_SEPARATOR + System.lineSeparator());
+			fw.write(VectorSpace.STRING_TERM_DOCUMENT + System.lineSeparator());
+			for (Map.Entry<String, TreeSet<DocumentWeightPair> > termDocuments : _termDocumentMap.entrySet()) {
+			    String term = termDocuments.getKey();
+			    TreeSet <DocumentWeightPair> pairs = termDocuments.getValue();
+			    
+			    fw.write(term + VectorSpace.STRING_TERM_SEPARATOR + VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
+			    for (DocumentWeightPair pair : pairs) {
+			    	fw.write(pair.documentVector.getDocId() + " " +
+			    			 pair.weight + 
+			    			 VectorSpace.STRING_DOCUMENT_WEIGHT_SEPARATOR);
+			    }
+			    
+			    fw.write(System.lineSeparator());
+			}
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
 		}
+		
 	}
 	
 	/**
