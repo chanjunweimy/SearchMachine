@@ -278,11 +278,7 @@ public class VectorSpace {
 				int docId = Integer.parseInt(pair[0]);
 				DocumentVector documentVector = _documentVectors.get(docId);
 				double weight = Double.parseDouble(pair[1]);
-				
-				System.out.println(documentWeight);
-				System.out.println(docId);
-				System.out.println(weight);
-				
+
 				DocumentWeightPair dwp = new DocumentWeightPair();
 				dwp.documentVector = documentVector;
 				dwp.weight = weight;
