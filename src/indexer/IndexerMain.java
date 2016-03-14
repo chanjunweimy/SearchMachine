@@ -27,6 +27,10 @@ public class IndexerMain {
 		_vectorSpace = VectorSpace.getObject();
 	}
 	
+	public void trainByIndexesFile(String filename) {
+		_vectorSpace.trainByIndexesFile(filename);
+	}
+	
 	public void trainIndexerByWtf(String dataDirectory) {
 		File dataDirectoryFile = new File(dataDirectory);
 		trainIndexerByWtf(dataDirectoryFile);
