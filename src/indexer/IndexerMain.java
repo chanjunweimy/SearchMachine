@@ -98,16 +98,17 @@ public class IndexerMain {
 		long startTime = System.currentTimeMillis();
 
 		IndexerMain indexer = new IndexerMain();
-		indexer.trainIndexerByWtf(DIR_DATA);
+		//indexer.trainIndexerByWtf(DIR_DATA);
 		//indexer.printIndexes();
 		
-		indexer.saveIndexes("indexes.txt");
+		//indexer.saveIndexes("indexes.txt");
+		indexer.trainByIndexesFile("indexes.txt");
 		
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;		
 		System.out.println("total time taken: " + totalTime);
 		
-		//startCLInterface(indexer);
+		startCLInterface(indexer);
 		
 	}
 

@@ -253,25 +253,37 @@ public class VectorSpace {
 	 */
 	private void addToTermDocumentMap(String line) {
 		String[] tokens = line.split(STRING_TERM_SEPARATOR);
+		
 		String term = tokens[0];
-		TreeSet<DocumentWeightPair> documentWeightPairs = new TreeSet<DocumentWeightPair>();
-		String[] documentWeights = tokens[1].split(STRING_DOCUMENT_WEIGHT_SEPARATOR);
-		for (String documentWeight : documentWeights) {
-			documentWeight = documentWeight.trim();
-			if (documentWeight.isEmpty()) {
-				continue;
+		Comparator <DocumentWeightPair> wtfComparator = new Utilities.SorterOfDocumentsByWeightedTermFrequency();
+		TreeSet<DocumentWeightPair> documentWeightPairs = new TreeSet<DocumentWeightPair>(wtfComparator);
+		if (tokens.length == 2) {
+			String[] documentWeights = tokens[1].split("[|]");
+
+			for (String documentWeight : documentWeights) {
+				documentWeight = documentWeight.trim();
+				if (documentWeight.isEmpty()) {
+					continue;
+				} else if (documentWeight.equals(STRING_DOCUMENT_WEIGHT_SEPARATOR)) {
+					continue;
+				}
+				String[] pair = documentWeight.split(" ");
+				System.out.println(documentWeight);
+
+				int docId = Integer.parseInt(pair[0]);
+				DocumentVector documentVector = _documentVectors.get(docId);
+				double weight = Double.parseDouble(pair[1]);
+				
+				DocumentWeightPair dwp = new DocumentWeightPair();
+				dwp.documentVector = documentVector;
+				dwp.weight = weight;
+				documentWeightPairs.add(dwp);
 			}
-			String[] pair = documentWeight.split(" ");
-			int docId = Integer.parseInt(pair[0]);
-			DocumentVector documentVector = _documentVectors.get(docId);
-			double weight = Double.parseDouble(pair[1]);
-			
-			DocumentWeightPair dwp = new DocumentWeightPair();
-			dwp.documentVector = documentVector;
-			dwp.weight = weight;
-			documentWeightPairs.add(dwp);
-		}
-		_termDocumentMap.put(term, documentWeightPairs);
+			_termDocumentMap.put(term, documentWeightPairs);
+
+		} 
+
+		
 	}
 	
 	public void saveTermDocumentMap(String filename) {
