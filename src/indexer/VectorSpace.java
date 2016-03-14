@@ -228,10 +228,16 @@ public class VectorSpace {
 			for (String line; (line = br.readLine()) != null;) {
 				if (line.equals(VectorSpace.STRING_DOCUMENT_VECTOR)) {
 					isDocumentVector = true;
+					continue;
+
 				} else if (line.equals(VectorSpace.STRING_DOCUMENT_TERM_SEPARATOR)) {
 					isDocumentVector = false;
+					continue;
+
 				} else if (line.equals(VectorSpace.STRING_TERM_DOCUMENT)) {
 					isTermDocument = true;
+					continue;
+
 				}
 				
 				if (isDocumentVector) {
@@ -268,11 +274,14 @@ public class VectorSpace {
 					continue;
 				}
 				String[] pair = documentWeight.split(" ");
-				System.out.println(documentWeight);
 
 				int docId = Integer.parseInt(pair[0]);
 				DocumentVector documentVector = _documentVectors.get(docId);
 				double weight = Double.parseDouble(pair[1]);
+				
+				System.out.println(documentWeight);
+				System.out.println(docId);
+				System.out.println(weight);
 				
 				DocumentWeightPair dwp = new DocumentWeightPair();
 				dwp.documentVector = documentVector;
